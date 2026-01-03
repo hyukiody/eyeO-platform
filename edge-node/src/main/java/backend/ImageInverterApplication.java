@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * Run this 'main' method to start the backend on http://localhost:8080
  */
 @SpringBootApplication
-@ComponentScan(basePackages = "backend") // Ensures Controllers and Services are found
+@ComponentScan(basePackages = {"backend", "com.imageapp"}) // Include advanced image APIs
 public class ImageInverterApplication {
 
     public static void main(String[] args) {

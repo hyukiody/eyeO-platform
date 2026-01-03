@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.eyeo</groupId>
+    <groupId>com.yo3</groupId>
     <artifactId>data-core</artifactId>
     <version>1.0.0</version>
     <name>Data Core - Secure I/O Engine</name>

@@ -1,25 +1,31 @@
 package com.imageprocessing;
 
+import backend.ImageInverterApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.imageapp.service.BatchImageProcessor;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(classes = ImageInverterApplication.class)
 @AutoConfigureMockMvc
 public class ImageFilterIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private MockMultipartFile createTestImage() throws Exception {
         BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
@@ -65,19 +71,24 @@ public class ImageFilterIntegrationTest {
 
     @Test
     void testBatchProcess() throws Exception {
-        MockMultipartFile file1 = createTestImage();
-        MockMultipartFile file2 = createTestImage();
+        byte[] imageBytes = createTestImage().getBytes();
+        BatchImageProcessor.BatchRequest request = new BatchImageProcessor.BatchRequest();
+        request.operation = "grayscale";
+        BatchImageProcessor.ImageData image = new BatchImageProcessor.ImageData();
+        image.id = "img-1";
+        image.format = "png";
+        image.imageBytes = imageBytes;
+        request.images = List.of(image);
 
-        mockMvc.perform(multipart("/api/images/batch-process")
-            .file(file1)
-            .file(file2)
-            .param("operation", "grayscale"))
+        mockMvc.perform(post("/api/images/batch-process")
+            .contentType("application/json")
+            .content(objectMapper.writeValueAsBytes(request)))
             .andExpect(status().isOk());
     }
 
     @Test
     void testFiltersList() throws Exception {
-        mockMvc.perform(multipart("/api/images/filters"))
+        mockMvc.perform(get("/api/images/filters"))
             .andExpect(status().isOk());
     }
 }

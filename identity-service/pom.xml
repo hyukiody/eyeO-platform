@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.teraapi</groupId>
+    <groupId>com.yo3</groupId>
     <artifactId>identity-service</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>

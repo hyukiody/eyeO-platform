@@ -26,7 +26,7 @@ public class AdvancedImageController {
     @PostMapping("/batch-process")
     public ResponseEntity<?> batchProcess(@RequestBody BatchImageProcessor.BatchRequest request) {
         try {
-            BatchImageProcessor.BatchResponse response = BatchImageProcessor.processBatch(request, null);
+            BatchImageProcessor.BatchResponse response = BatchImageProcessor.processBatch(request, inversionService);
             return ResponseEntity.ok(response);
         } catch (IOException e) {
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));

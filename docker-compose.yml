@@ -67,8 +67,8 @@ services:
   # ============================================================
   image-inverter:
     build:
-      context: ./middleware
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: middleware/Dockerfile
     container_name: yo3-middleware
     environment:
       - SERVER_PORT=8091

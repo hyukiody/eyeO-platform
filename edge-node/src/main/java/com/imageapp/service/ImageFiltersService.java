@@ -17,6 +17,12 @@ public class ImageFiltersService {
     }
 
     public static BufferedImage applyBlur(BufferedImage image, int radius) {
+        BufferedImage source = new BufferedImage(
+            image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = source.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
         int size = radius * 2 + 1;
         float[] kernel = new float[size * size];
         float value = 1.0f / (size * size);
@@ -27,7 +33,7 @@ public class ImageFiltersService {
         BufferedImage blurred = new BufferedImage(
             image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         ConvolveOp op = new ConvolveOp(new Kernel(size, size, kernel), ConvolveOp.EDGE_NO_OP, null);
-        op.filter(image, blurred);
+        op.filter(source, blurred);
         return blurred;
     }
 

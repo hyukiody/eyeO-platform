@@ -35,10 +35,11 @@
     </properties>
 
     <modules>
-        <module>crypto-core</module>
+        <module>data-core</module>
         <module>edge-node</module>
         <module>identity-service</module>
         <module>stream-processing</module>
+        <module>middleware</module>
     </modules>
 
     <scm>
