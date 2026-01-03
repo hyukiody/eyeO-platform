@@ -1,11 +1,11 @@
 # ========================================
-# eyeO Platform - Test Script
+# yo3 Platform - Test Script
 # ========================================
 # Quick API tests for containerized services
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "🧪 eyeO Platform - API Tests" -ForegroundColor Cyan
+Write-Host "🧪 yo3 Platform - API Tests" -ForegroundColor Cyan
 Write-Host "=============================" -ForegroundColor Cyan
 Write-Host ""
 

@@ -54,7 +54,7 @@ async function initializeCrypto(seed: string): Promise<void> {
   );
 
   // Use static salt (in production, salt should be stored with encrypted data)
-  const salt = encoder.encode('eyeOSurveillance-AES-Salt-2024');
+  const salt = encoder.encode('yo3Surveillance-AES-Salt-2024');
 
   cryptoKey = await crypto.subtle.deriveKey(
     {

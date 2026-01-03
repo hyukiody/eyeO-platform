@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * Tracks security-sensitive events for compliance and threat detection.
  * Implements 90-day retention policy as per SECURITY.md requirements.
  * 
- * @author eyeO Platform Security Team
+ * @author yo3 Platform Security Team
  * @version 1.0
  */
 @Entity

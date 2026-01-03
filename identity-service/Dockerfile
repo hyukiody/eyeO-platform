@@ -1,24 +1,17 @@
 # Multi-stage build for optimized Docker image
-# Stage 1: Build
 FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
 
-# Copy parent pom and identity-service pom
-COPY pom.xml ./
-COPY identity-service/pom.xml ./identity-service/
+# Install Maven
 RUN apk add --no-cache maven
 
-# Download dependencies (cached layer)
-RUN cd identity-service && mvn dependency:go-offline -B
-
-# Copy source code
-COPY identity-service/src ./identity-service/src
+# Copy pom and source
+COPY pom.xml ./
+COPY src ./src
 
 # Build the application
-RUN cd identity-service && \
-    mvn clean package -DskipTests && \
-    mv target/*.jar /app/app.jar
+RUN mvn clean package -DskipTests
 
 # Stage 2: Runtime
 FROM eclipse-temurin:21-jre-alpine

@@ -1,4 +1,4 @@
-# eyeO Platform - System Status Check
+# yo3 Platform - System Status Check
 # Validates all components and provides actionable feedback
 
 param(
@@ -6,7 +6,7 @@ param(
 )
 
 Write-Host "`n╔════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║         eyeO Platform - System Status Check           ║" -ForegroundColor Cyan
+Write-Host "║         yo3 Platform - System Status Check           ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
 # Initialize counters
@@ -57,8 +57,8 @@ try {
         $warnings += "Docker Desktop not started"
     } else {
         $requiredServices = @(
-            "eyeo-identity-db",
-            "eyeo-stream-db",
+            "yo3-identity-db",
+            "yo3-stream-db",
             "identity-service",
             "data-core",
             "stream-processing"

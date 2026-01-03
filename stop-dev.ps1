@@ -1,5 +1,5 @@
 # ========================================
-# eyeO Platform - Stop Script
+# YO3 Platform - Stop Script
 # ========================================
 # Stops all containerized services
 
@@ -7,7 +7,7 @@ param(
     [switch]$RemoveVolumes = $false
 )
 
-Write-Host "🛑 Stopping eyeO Platform services..." -ForegroundColor Yellow
+Write-Host "🛑 Stopping YO3 Platform services..." -ForegroundColor Yellow
 Write-Host ""
 
 if ($RemoveVolumes) {

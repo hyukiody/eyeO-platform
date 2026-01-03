@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   
   // Base path for deployment (GitHub Pages or production)
-  base: process.env.NODE_ENV === 'production' ? '/eyeO-platform/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/yo3-platform/' : '/',,
   
   // Enable Web Workers with ES module format
   worker: {

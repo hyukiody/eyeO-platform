@@ -67,6 +67,23 @@ export default function Showcase() {
           </div>
         </Link>
 
+        {/* Zero-Trust Video Demo Card */}
+        <Link to="/showcase/zero-trust" className="showcase-card">
+          <div className="card-icon">🔐</div>
+          <h2 className="card-title">Zero-Trust Video System</h2>
+          <p className="card-description">
+            CaCTUs architecture with device pairing and client-side processing
+          </p>
+          <div className="card-tags">
+            <span className="tag">QR Pairing</span>
+            <span className="tag">Web Workers</span>
+            <span className="tag">IndexedDB</span>
+          </div>
+          <div className="card-footer">
+            <span className="card-action">View Demo →</span>
+          </div>
+        </Link>
+
         {/* Code Samples Card */}
         <div className="showcase-card coming-soon">
           <div className="card-icon">💻</div>

@@ -100,7 +100,7 @@ public class StreamRequestHandler {
             String encoded = DataProtectionService.encode(plaintext, key);
 
             JsonObject response = new JsonObject();
-            response.addProperty("encrypted", encrypted);
+            response.addProperty("encrypted", encoded);
             response.addProperty("key", key);
             response.addProperty("username", username);
             response.addProperty("timestamp", System.currentTimeMillis());
@@ -121,7 +121,7 @@ public class StreamRequestHandler {
         String key = request.get("key").getAsString();
 
         try {
-            String decrypted = EncryptionService.decrypt(encrypted, key);
+            String decrypted = DataProtectionService.decode(encrypted, key);
 
             JsonObject response = new JsonObject();
             response.addProperty("decrypted", decrypted);

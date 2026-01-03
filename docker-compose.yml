@@ -1,5 +1,5 @@
 # ========================================
-# EyeO Platform - Secure Mesh Network
+# YO3 Platform - Secure Mesh Network
 # Zero-Trust Video Surveillance System
 # ========================================
 
@@ -20,15 +20,16 @@ services:
   # Port: 9090 | Video processing and blind storage
   # ============================================================
   secure-io-engine:
-    build:
-      context: ./data-core
-      dockerfile: Dockerfile
-    container_name: eyeo-data-core
+    image: yo3-platform-data-core:latest
+    # build:
+    #   context: ./data-core
+    #   dockerfile: Dockerfile
+    container_name: yo3-data-core
     environment:
       - SERVER_PORT=9090
       - SPRING_PROFILES_ACTIVE=production
-      - EYEO_STORAGE_PATH=/storage/processed
-      - EYEO_MASTER_KEY=${EYEO_MASTER_KEY:-}
+      - YO3_STORAGE_PATH=/storage/processed
+      - YO3_MASTER_KEY=${YO3_MASTER_KEY:-}
     volumes:
       - encrypted-video-storage:/storage/processed
     networks:
@@ -44,16 +45,16 @@ services:
   # 2. Edge Node - Video Capture and Streaming
   # Port: 8080
   # ============================================================
-  eyeo-edge-node:
+  yo3-edge-node:
     build:
       context: ./edge-node
       dockerfile: Dockerfile
-    container_name: eyeo-edge-node
+    container_name: yo3-edge-node
     environment:
       - SERVER_PORT=8080
-      - EYEO_DATA_CORE_URL=http://secure-io-engine:9090
-      - EYEO_DEVICE_ID=${DEVICE_ID:-edge-node-001}
-      - EYEO_DEVICE_TOKEN=${DEVICE_TOKEN:?DEVICE_TOKEN must be set in .env file}
+      - YO3_DATA_CORE_URL=http://secure-io-engine:9090
+      - YO3_DEVICE_ID=${DEVICE_ID:-edge-node-001}
+      - YO3_DEVICE_TOKEN=${DEVICE_TOKEN:?DEVICE_TOKEN must be set in .env file}
     networks:
       - secure_mesh_net
     depends_on:
@@ -66,9 +67,9 @@ services:
   # ============================================================
   image-inverter:
     build:
-      context: ../Image-Inverter_Project
+      context: ./middleware
       dockerfile: Dockerfile
-    container_name: eyeo-middleware
+    container_name: yo3-middleware
     environment:
       - SERVER_PORT=8091
       - SPRING_DATASOURCE_URL=jdbc:postgresql://sentinel-db:5432/sentinel
@@ -93,7 +94,7 @@ services:
   # ============================================================
   sentinel-db:
     image: postgres:16-alpine
-    container_name: eyeo-sentinel-db
+    container_name: yo3-sentinel-db
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-sentinel}
       - POSTGRES_USER=${POSTGRES_USER:-sentinel_user}
@@ -118,7 +119,7 @@ services:
   # ============================================================
   api-gateway:
     image: nginx:alpine
-    container_name: eyeo-gateway
+    container_name: yo3-gateway
     ports:
       - "80:80"
       - "443:443"
@@ -139,9 +140,9 @@ services:
   # ============================================================
   frontend:
     build:
-      context: ../javascriptProjects/jsproject
+      context: ./frontend
       dockerfile: Dockerfile
-    container_name: eyeo-frontend
+    container_name: yo3-frontend
     environment:
       - VITE_API_GATEWAY=http://api-gateway
       - VITE_ENABLE_CRYPTO=true
@@ -154,10 +155,11 @@ services:
   # Porta Interna: 8081
   # ============================================================
   identity-service:
-    build:
-      context: ./identity-service
-      dockerfile: Dockerfile
-    container_name: eyeo-identity-service
+    image: yo3-platform-identity-service:latest
+    # build:
+    #   context: ./identity-service
+    #   dockerfile: Dockerfile
+    container_name: yo3-identity-service
     environment:
       - SERVER_PORT=8081
       - SPRING_DATASOURCE_URL=jdbc:mysql://identity-db:3306/teraapi_identity?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
@@ -182,7 +184,7 @@ services:
 
   identity-db:
     image: mysql:8.0
-    container_name: eyeo-identity-db
+    container_name: yo3-identity-db
     environment:
       - MYSQL_ROOT_PASSWORD=${IDENTITY_MYSQL_ROOT_PASSWORD:?IDENTITY_MYSQL_ROOT_PASSWORD must be set in .env file}
       - MYSQL_DATABASE=teraapi_identity
@@ -208,7 +210,7 @@ services:
     build:
       context: ./stream-processing
       dockerfile: Dockerfile
-    container_name: eyeo-stream-processing
+    container_name: yo3-stream-processing
     environment:
       - SERVER_PORT=8082
       - SPRING_DATASOURCE_URL=jdbc:mysql://stream-db:3306/teraapi_stream?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
@@ -234,7 +236,7 @@ services:
 
   stream-db:
     image: mysql:8.0
-    container_name: eyeo-stream-db
+    container_name: yo3-stream-db
     environment:
       - MYSQL_ROOT_PASSWORD=${STREAM_MYSQL_ROOT_PASSWORD:-change_me_root}
       - MYSQL_DATABASE=teraapi_stream

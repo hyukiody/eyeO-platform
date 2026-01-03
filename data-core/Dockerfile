@@ -2,15 +2,15 @@ FROM eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /build
 
+# Install Maven
+RUN apk add --no-cache maven
+
 # Copy project files
 COPY pom.xml .
-COPY data-core/pom.xml ./data-core/
-COPY data-core/src ./data-core/src
+COPY src ./src
 
-# Build with Maven
-RUN apk add --no-cache maven && \
-    cd data-core && \
-    mvn clean package -DskipTests
+# Build
+RUN mvn clean package -DskipTests
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine
@@ -18,7 +18,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copy JAR from builder
-COPY --from=builder /build/data-core/target/*.jar app.jar
+COPY --from=builder /build/target/*.jar app.jar
 
 # Add health check dependencies
 RUN apk add --no-cache wget

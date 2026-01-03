@@ -54,7 +54,7 @@ async function initializeProcessor(seed: string): Promise<void> {
   );
 
   // Use static salt (in production, salt should be stored with protected data)
-  const salt = encoder.encode('eyeOSurveillance-Stream-Salt-2024');
+  const salt = encoder.encode('yo3Surveillance-Stream-Salt-2024');
 
   processorKey = await crypto.subtle.deriveKey(
     {

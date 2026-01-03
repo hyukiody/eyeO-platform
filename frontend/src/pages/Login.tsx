@@ -62,7 +62,7 @@ export default function Login() {
               </svg>
             </div>
           </div>
-          <h1 className="login-title">eyeO Platform</h1>
+          <h1 className="login-title">yo3 Platform</h1>
           <p className="login-subtitle">
             {isLoginMode ? t('login.welcomeBack') : t('login.createAccount')}
           </p>

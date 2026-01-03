@@ -1,4 +1,4 @@
-package com.eyeo.contracts.monetization;
+package com.yo3.contracts.monetization;
 
 import java.util.EnumSet;
 import java.util.Set;

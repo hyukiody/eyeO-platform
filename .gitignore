@@ -42,6 +42,11 @@ Thumbs.db
 **/*.jar
 **/*.war
 
+# Large deployment artifacts (use Git LFS or external storage)
+*.zip
+*.tar
+deployment-package/images/
+
 # ========================================
 # PERSONAL & PRIVATE FILES (NEVER COMMIT)
 # ========================================

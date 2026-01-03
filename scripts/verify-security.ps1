@@ -1,6 +1,6 @@
 # ========================================
 # Security Verification Script
-# eyeO Platform v2.0-public
+# yo3 Platform v2.0-public
 # ========================================
 # Verifies no sensitive data is tracked in Git
 
@@ -10,7 +10,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "[SECURITY] eyeO Platform Security Verification" -ForegroundColor Cyan
+Write-Host "[SECURITY] yo3 Platform Security Verification" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 # Test counters

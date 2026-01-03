@@ -1,5 +1,5 @@
 # ========================================
-# eyeO Platform - Quick Start Script
+# yo3 Platform - Quick Start Script
 # ========================================
 # Starts all containerized services for development testing
 
@@ -10,7 +10,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "🚀 eyeO Platform - Quick Start" -ForegroundColor Cyan
+Write-Host "🚀 yo3 Platform - Quick Start" -ForegroundColor Cyan
 Write-Host "==============================" -ForegroundColor Cyan
 Write-Host ""
 

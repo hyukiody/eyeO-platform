@@ -48,7 +48,7 @@ if (-not $ForceNoBackup) {
     Write-Host "`n[STEP 1/6] Creating backup..." -ForegroundColor Cyan
     
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-    $backupPath = "..\eyeo-platform-backup-$timestamp"
+    $backupPath = "..\yo3-platform-backup-$timestamp"
     
     Write-Host "  Backup location: $backupPath" -ForegroundColor Gray
     
@@ -97,7 +97,7 @@ Write-Host "`n[STEP 4/6] Creating initial commit..." -ForegroundColor Cyan
 git add -A
 
 $initialCommitMsg = @"
-Initial commit - eyeO Platform v2.0
+Initial commit - yo3 Platform v2.0
 
 Production-grade microservices security platform featuring:
 - Zero-Trust architecture with client-side AES-256-GCM encryption
@@ -171,7 +171,7 @@ if (-not $ForceNoBackup) {
 
 Write-Host "`nNext steps for collaborators:" -ForegroundColor Cyan
 Write-Host "  1. Backup their local changes" -ForegroundColor Gray
-Write-Host "  2. Delete local repository: rm -rf eyeo-platform" -ForegroundColor Gray
+Write-Host "  2. Delete local repository: rm -rf yo3-platform" -ForegroundColor Gray
 Write-Host "  3. Re-clone: git clone <repository-url>" -ForegroundColor Gray
 
 Write-Host "`nRepository size after cleanup:" -ForegroundColor Cyan

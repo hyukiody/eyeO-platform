@@ -1,7 +1,7 @@
 version: '3.8'
 
 # ========================================
-# eyeO Platform - Master Deployment
+# yo3 Platform - Master Deployment
 # ========================================
 # Professional showcase configuration
 # All services orchestrated for demonstration
@@ -24,7 +24,7 @@ services:
   
   identity-db:
     image: mysql:8.0
-    container_name: eyeo-identity-db
+    container_name: yo3-identity-db
     networks:
       - secure_mesh_net
     environment:
@@ -43,7 +43,7 @@ services:
 
   stream-db:
     image: mysql:8.0
-    container_name: eyeo-stream-db
+    container_name: yo3-stream-db
     networks:
       - secure_mesh_net
     environment:
@@ -64,7 +64,7 @@ services:
 
   sentinel-db:
     image: postgres:16-alpine
-    container_name: eyeo-sentinel-db
+    container_name: yo3-sentinel-db
     networks:
       - secure_mesh_net
     environment:
@@ -86,8 +86,8 @@ services:
     build:
       context: .
       dockerfile: identity-service/Dockerfile
-    image: eyeo/identity-service:latest
-    container_name: eyeo-identity-service
+    image: yo3/identity-service:latest
+    container_name: yo3-identity-service
     networks:
       - secure_mesh_net
     environment:
@@ -97,7 +97,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${IDENTITY_DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET_KEY}
       SERVER_PORT: 8081
-      EYEO_ENV: ${EYEO_ENV:-production}
+      yo3_ENV: ${yo3_ENV:-production}
     depends_on:
       identity-db:
         condition: service_healthy
@@ -113,8 +113,8 @@ services:
     build:
       context: .
       dockerfile: stream-processing/Dockerfile
-    image: eyeo/stream-processing:latest
-    container_name: eyeo-stream-processing
+    image: yo3/stream-processing:latest
+    container_name: yo3-stream-processing
     networks:
       - secure_mesh_net
     environment:
@@ -141,18 +141,18 @@ services:
     build:
       context: .
       dockerfile: data-core/Dockerfile
-    image: eyeo/data-core:latest
-    container_name: eyeo-data-core
+    image: yo3/data-core:latest
+    container_name: yo3-data-core
     networks:
       - secure_mesh_net
     environment:
       SPRING_PROFILES_ACTIVE: production
       SERVER_PORT: 9090
-      EYEO_MASTER_KEY: ${EYEO_MASTER_KEY}
+      yo3_MASTER_KEY: ${yo3_MASTER_KEY}
       STORAGE_PATH: /protected-storage
       STORAGE_TYPE: ${STORAGE_TYPE:-LOCAL}
       IDENTITY_SERVICE_URL: http://identity-service:8081
-      EYEO_ENV: ${EYEO_ENV:-production}
+      yo3_ENV: ${yo3_ENV:-production}
     volumes:
       - protected-storage:/protected-storage
     depends_on:
@@ -175,8 +175,8 @@ services:
       args:
         VITE_API_GATEWAY: ${VITE_API_GATEWAY:-https://localhost}
         VITE_ENABLE_CLIENT_PROCESSING: ${VITE_ENABLE_CLIENT_PROCESSING:-true}
-    image: eyeo/frontend:latest
-    container_name: eyeo-frontend
+    image: yo3/frontend:latest
+    container_name: yo3-frontend
     networks:
       - secure_mesh_net
     environment:
@@ -192,7 +192,7 @@ services:
 
   api-gateway:
     image: nginx:alpine
-    container_name: eyeo-api-gateway
+    container_name: yo3-api-gateway
     networks:
       - secure_mesh_net
     ports:

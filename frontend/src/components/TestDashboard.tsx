@@ -122,7 +122,7 @@ const TestDashboard: React.FC = () => {
     <div className="test-dashboard">
       <div className="dashboard-header">
         <h1>🚀 Deployment Test Verification Dashboard</h1>
-        <p className="subtitle">EyeO Platform - Real-time Test & Service Monitoring</p>
+        <p className="subtitle">yo3 Platform - Real-time Test & Service Monitoring</p>
       </div>
 
       <div className="dashboard-grid">

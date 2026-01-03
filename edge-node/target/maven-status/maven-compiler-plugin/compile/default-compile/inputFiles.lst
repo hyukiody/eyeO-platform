@@ -1,4 +1,5 @@
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\models\ImageRecord.java
+D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\com\eyeo\edge\config\RestTemplateConfig.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\com\eyeo\edge\service\SecureVideoStreamService.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\utils\ImageProcessor.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\processor\ImageProcessor.java
@@ -7,6 +8,7 @@ D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backen
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\video\SecureVideoStreamClient.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\ImageInverterApplication.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\config\GlobalExceptionHandler.java
+D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\com\eyeo\edge\service\ZeroTrustVideoProcessor.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\dto\ImageInfoResponse.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\entities\gui\SwingImageClient.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\config\RestApiConfiguration.java
@@ -27,4 +29,5 @@ D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backen
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\backend\nodes\ImageNode.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\com\imageapp\service\ImageFiltersService.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\com\imageapp\service\ImageProcessingService.java
+D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\com\eyeo\edge\service\VideoStreamExportService.java
 D:\D_ORGANIZED\Development\Projects\eyeo-platform\edge-node\src\main\java\worker\ImageProcessingWorker.java

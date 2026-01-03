@@ -1,10 +1,10 @@
-# eyeO Platform - Deployment Validation
+# yo3 Platform - Deployment Validation
 # Verifies all components are ready for showcase
 
 $ErrorActionPreference = "Stop"
 
 Write-Host ""
-Write-Host "eyeO Platform - Deployment Validation" -ForegroundColor Cyan
+Write-Host "yo3 Platform - Deployment Validation" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -70,7 +70,7 @@ Write-Host ""
 Security Files Check
 Write-Host "
 $securityFiles = @(
-    "data-core/src/main/java/com/eyeo/data/config/SecurityConfiguration.java",
+    "data-core/src/main/java/com/yo3/data/config/SecurityConfiguration.java",
     "identity-service/src/main/java/com/teraapi/identity/entity/SecurityAuditLog.java",
     "identity-service/src/main/java/com/teraapi/identity/service/AuditLogService.java",
     "frontend/src/workers/stream.worker.ts"
@@ -120,7 +120,7 @@ if (Test-Path ".env") {
     # Check for required variables
     $envContent = Get-Content ".env" -Raw
     
-    $requiredVars = @("EYEO_MASTER_KEY", "JWT_SECRET_KEY", "POSTGRES_PASSWORD")
+    $requiredVars = @("yo3_MASTER_KEY", "JWT_SECRET_KEY", "POSTGRES_PASSWORD")
     
     foreach ($var in $requiredVars) {
         if ($envContent -match $var) {

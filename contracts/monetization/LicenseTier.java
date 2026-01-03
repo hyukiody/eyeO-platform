@@ -1,7 +1,7 @@
-package com.eyeo.contracts.monetization;
+package com.yo3.contracts.monetization;
 
 /**
- * License tier enumeration for eyeO platform monetization strategy.
+ * License tier enumeration for yo3 platform monetization strategy.
  * 
  * Defines three commercial tiers with distinct feature sets and quotas:
  * - FREE: Limited trial tier with simulated AI and watermarked video

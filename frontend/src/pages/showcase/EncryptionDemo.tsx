@@ -40,7 +40,7 @@ export default function EncryptionDemo() {
     return crypto.subtle.deriveKey(
       {
         name: 'PBKDF2',
-        salt: salt,
+        salt: salt as BufferSource,
         iterations: 100000,
         hash: 'SHA-256',
       },
@@ -261,7 +261,7 @@ Total: Base64 encoded`}</pre>
             <h3>⚠️ Demo Notice</h3>
             <p>
               This is a <strong>educational demonstration</strong> of client-side encryption.
-              In production, the eyeO platform uses this same technique for 
+              In production, the yo3 platform uses this same technique for 
               <strong> Zero-Trust video decryption</strong> with Web Workers for 
               non-blocking performance.
             </p>
@@ -270,7 +270,7 @@ Total: Base64 encoded`}</pre>
           <section className="info-section">
             <h3>🔗 Production Use Case</h3>
             <p>
-              The eyeO platform encrypts video streams server-side with AES-256-GCM,
+              The yo3 platform encrypts video streams server-side with AES-256-GCM,
               then decrypts client-side using the user's seed key. This ensures
               <strong> zero-trust architecture</strong> - the server never has access
               to decrypted video content.

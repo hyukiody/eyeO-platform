@@ -1,4 +1,4 @@
-// API Service for eyeO Platform
+// API Service for yo3 Platform
 import type { AuthenticationRequest, AuthenticationResponse, User, DetectionEvent, Camera, QuotaUsage } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
@@ -6,7 +6,7 @@ const STREAM_API_URL = import.meta.env.VITE_STREAM_API_URL || 'http://localhost:
 
 class ApiService {
   private getAuthHeaders(): HeadersInit {
-    const token = localStorage.getItem('eyeo_token');
+    const token = localStorage.getItem('yo3_token');
     return {
       'Content-Type': 'application/json',
       ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
@@ -30,9 +30,9 @@ class ApiService {
     const data = await response.json();
     
     // Store token and seed key
-    localStorage.setItem('eyeo_token', data.accessToken);
+    localStorage.setItem('yo3_token', data.accessToken);
     if (credentials.seedKey) {
-      localStorage.setItem('eyeo_seed_key', credentials.seedKey);
+      localStorage.setItem('yo3_seed_key', credentials.seedKey);
     }
 
     return data;
@@ -52,25 +52,25 @@ class ApiService {
 
     const data = await response.json();
     
-    localStorage.setItem('eyeo_token', data.accessToken);
+    localStorage.setItem('yo3_token', data.accessToken);
     if (credentials.seedKey) {
-      localStorage.setItem('eyeo_seed_key', credentials.seedKey);
+      localStorage.setItem('yo3_seed_key', credentials.seedKey);
     }
 
     return data;
   }
 
   logout(): void {
-    localStorage.removeItem('eyeo_token');
-    localStorage.removeItem('eyeo_seed_key');
+    localStorage.removeItem('yo3_token');
+    localStorage.removeItem('yo3_seed_key');
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('eyeo_token');
+    return !!localStorage.getItem('yo3_token');
   }
 
   getSeedKey(): string | null {
-    return localStorage.getItem('eyeo_seed_key');
+    return localStorage.getItem('yo3_seed_key');
   }
 
   // ===== User Profile =====

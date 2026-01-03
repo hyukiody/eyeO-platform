@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Check for existing token on mount
     const initAuth = async () => {
-      const storedToken = localStorage.getItem('eyeo_token');
+      const storedToken = localStorage.getItem('yo3_token');
       if (storedToken) {
         setToken(storedToken);
         try {

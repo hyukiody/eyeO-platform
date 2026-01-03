@@ -1,12 +1,12 @@
 # ========================================
-# eyeO Platform - Development Checkpoint
+# YO3 Platform - Development Checkpoint
 # ========================================
 # Simplified containerized deployment for testing all services
 
 version: '3.8'
 
 networks:
-  eyeo-dev:
+  yo3-dev:
     driver: bridge
 
 volumes:
@@ -19,9 +19,9 @@ services:
   
   identity-db:
     image: mysql:8.0
-    container_name: eyeo-identity-db
+    container_name: yo3-identity-db
     networks:
-      - eyeo-dev
+      - yo3-dev
     environment:
       MYSQL_ROOT_PASSWORD: ${IDENTITY_DB_ROOT_PASSWORD:-rootpass123}
       MYSQL_DATABASE: identity_db
@@ -39,9 +39,9 @@ services:
 
   stream-db:
     image: mysql:8.0
-    container_name: eyeo-stream-db
+    container_name: yo3-stream-db
     networks:
-      - eyeo-dev
+      - yo3-dev
     environment:
       MYSQL_ROOT_PASSWORD: ${STREAM_DB_ROOT_PASSWORD:-rootpass123}
       MYSQL_DATABASE: stream_db
@@ -63,10 +63,10 @@ services:
     build:
       context: .
       dockerfile: identity-service/Dockerfile
-    image: eyeo/identity-service:dev
-    container_name: eyeo-identity-service
+    image: yo3/identity-service:dev
+    container_name: yo3-identity-service
     networks:
-      - eyeo-dev
+      - yo3-dev
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SERVER_PORT: 8081
@@ -93,10 +93,10 @@ services:
     build:
       context: .
       dockerfile: stream-processing/Dockerfile
-    image: eyeo/stream-processing:dev
-    container_name: eyeo-stream-processing
+    image: yo3/stream-processing:dev
+    container_name: yo3-stream-processing
     networks:
-      - eyeo-dev
+      - yo3-dev
     environment:
       SERVER_PORT: 8082
       DB_HOST: stream-db
@@ -117,14 +117,14 @@ services:
     build:
       context: .
       dockerfile: data-core/Dockerfile
-    image: eyeo/data-core:dev
-    container_name: eyeo-data-core
+    image: yo3/data-core:dev
+    container_name: yo3-data-core
     networks:
-      - eyeo-dev
+      - yo3-dev
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SERVER_PORT: 9090
-      EYEO_MASTER_KEY: ${EYEO_MASTER_KEY:-DevMasterKey2024ForTesting0123456789012}
+      YO3_MASTER_KEY: ${YO3_MASTER_KEY:-DevMasterKey2024ForTesting0123456789012}
       STORAGE_PATH: /protected-storage
       STORAGE_TYPE: LOCAL
       IDENTITY_SERVICE_URL: http://identity-service:8081
@@ -151,10 +151,10 @@ services:
       args:
         VITE_API_GATEWAY: http://localhost:8081
         VITE_ENABLE_CLIENT_PROCESSING: "true"
-    image: eyeo/frontend:dev
-    container_name: eyeo-frontend
+    image: yo3/frontend:dev
+    container_name: yo3-frontend
     networks:
-      - eyeo-dev
+      - yo3-dev
     ports:
       - "5173:80"
     depends_on:

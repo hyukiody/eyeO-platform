@@ -1,5 +1,5 @@
 # ========================================
-# eyeO Platform - Master Deployment Script
+# yo3 Platform - Master Deployment Script
 # ========================================
 # Professional showcase automation
 # Builds, deploys, and validates all services
@@ -13,7 +13,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "🚀 eyeO Platform - Master Deployment" -ForegroundColor Cyan
+Write-Host "🚀 yo3 Platform - Master Deployment" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -38,7 +38,7 @@ if (!(Test-Path ".env")) {
     Write-Host "⚠ .env file not found. Copying from .env.example..." -ForegroundColor Yellow
     Copy-Item ".env.example" ".env"
     Write-Host "⚠ Please edit .env file with your secure values before continuing." -ForegroundColor Yellow
-    Write-Host "  Required: EYEO_MASTER_KEY, JWT_SECRET_KEY, database passwords" -ForegroundColor Yellow
+    Write-Host "  Required: yo3_MASTER_KEY, JWT_SECRET_KEY, database passwords" -ForegroundColor Yellow
     exit 1
 }
 
@@ -91,7 +91,7 @@ $dbHealthy = $true
 $databases = @("identity-db", "stream-db", "sentinel-db")
 
 foreach ($db in $databases) {
-    $health = docker inspect --format='{{.State.Health.Status}}' "eyeo-$db" 2>$null
+    $health = docker inspect --format='{{.State.Health.Status}}' "yo3-$db" 2>$null
     
     if ($health -ne "healthy") {
         Write-Host "  ⚠ $db is not healthy yet (status: $health)" -ForegroundColor Yellow
@@ -180,9 +180,9 @@ if ($LoadDemo) {
     Write-Host "  Creating demo user accounts..." -ForegroundColor Cyan
     
     $demoUsers = @(
-        @{email="demo@eyeo.com"; password="Demo2024!"; tier="ENTERPRISE"},
-        @{email="pro@eyeo.com"; password="Pro2024!"; tier="PRO"},
-        @{email="free@eyeo.com"; password="Free2024!"; tier="FREE"}
+        @{email="demo@yo3.com"; password="Demo2024!"; tier="ENTERPRISE"},
+        @{email="pro@yo3.com"; password="Pro2024!"; tier="PRO"},
+        @{email="free@yo3.com"; password="Free2024!"; tier="FREE"}
     )
     
     foreach ($user in $demoUsers) {
@@ -232,9 +232,9 @@ Write-Host ""
 
 if ($LoadDemo) {
     Write-Host "👥 Demo Accounts:" -ForegroundColor Cyan
-    Write-Host "  Enterprise: demo@eyeo.com / Demo2024!" -ForegroundColor White
-    Write-Host "  Pro:        pro@eyeo.com / Pro2024!" -ForegroundColor White
-    Write-Host "  Free:       free@eyeo.com / Free2024!" -ForegroundColor White
+    Write-Host "  Enterprise: demo@yo3.com / Demo2024!" -ForegroundColor White
+    Write-Host "  Pro:        pro@yo3.com / Pro2024!" -ForegroundColor White
+    Write-Host "  Free:       free@yo3.com / Free2024!" -ForegroundColor White
     Write-Host ""
 }
 
@@ -250,7 +250,7 @@ Write-Host "  Stop all:    docker-compose -f docker-compose.master.yml down" -Fo
 Write-Host "  Restart:     docker-compose -f docker-compose.master.yml restart" -ForegroundColor White
 Write-Host ""
 
-Write-Host "🎉 eyeO Platform is ready for professional showcase!" -ForegroundColor Green
+Write-Host "🎉 yo3 Platform is ready for professional showcase!" -ForegroundColor Green
 Write-Host ""
 
 # Open dashboard in browser

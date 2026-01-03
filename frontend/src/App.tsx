@@ -8,6 +8,7 @@ import Showcase from './pages/Showcase'
 import ObjectDetectionDemo from './pages/showcase/ObjectDetectionDemo'
 import EncryptionDemo from './pages/showcase/EncryptionDemo'
 import ArchitectureShowcase from './pages/showcase/ArchitectureShowcase'
+import ZeroTrustVideoDemo from './pages/showcase/ZeroTrustVideoDemo'
 import TestDashboard from './components/TestDashboard'
 
 // Protected Route Component
@@ -96,7 +97,7 @@ export default function App() {
         {/* Cyberpunk Neon Divider Section */}
         <div className="neon-divider-section">
           <div className="neon-line"></div>
-          <div className="neon-text">eyeO SURVEILLANCE PLATFORM</div>
+          <div className="neon-text">yo3 SURVEILLANCE PLATFORM</div>
           <div className="neon-line"></div>
         </div>
 
@@ -115,6 +116,7 @@ export default function App() {
           <Route path="/showcase/object-detection" element={<ObjectDetectionDemo />} />
           <Route path="/showcase/encryption" element={<EncryptionDemo />} />
           <Route path="/showcase/architecture" element={<ArchitectureShowcase />} />
+          <Route path="/showcase/zero-trust" element={<ZeroTrustVideoDemo />} />
           <Route path="/test-dashboard" element={<TestDashboard />} />
         </Routes>
 

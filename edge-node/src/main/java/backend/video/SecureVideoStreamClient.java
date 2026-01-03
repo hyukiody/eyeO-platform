@@ -43,13 +43,13 @@ public class SecureVideoStreamClient {
     private static final int CONNECTION_TIMEOUT_SECONDS = 30;
     private static final int REQUEST_TIMEOUT_MINUTES = 10; // For long video streams
     
-    @Value("${eyeo.data-core.url:http://localhost:9090}")
+    @Value("${yo3.data-core.url:http://localhost:9090}")
     private String dataCoreUrl;
     
-    @Value("${eyeo.device.id}")
+    @Value("${yo3.device.id}")
     private String deviceId;
     
-    @Value("${eyeo.device.token}")
+    @Value("${yo3.device.token}")
     private String deviceToken;
     
     private final HttpClient httpClient;

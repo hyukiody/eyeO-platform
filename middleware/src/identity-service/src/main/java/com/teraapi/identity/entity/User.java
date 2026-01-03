@@ -27,6 +27,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "device_id")
+    private String deviceId;
+
     @Column(name = "is_active")
     @Builder.Default
     private Boolean isActive = true;

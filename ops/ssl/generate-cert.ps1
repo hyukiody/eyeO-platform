@@ -4,7 +4,7 @@
 Write-Host "Gerando certificado SSL auto-assinado..." -ForegroundColor Cyan
 
 $certParams = @{
-    Subject = "CN=localhost,O=EyeO Platform,C=BR"
+    Subject = "CN=localhost,O=yo3 Platform,C=BR"
     DnsName = @("localhost", "127.0.0.1", "api-gateway")
     CertStoreLocation = "Cert:\CurrentUser\My"
     NotAfter = (Get-Date).AddYears(1)

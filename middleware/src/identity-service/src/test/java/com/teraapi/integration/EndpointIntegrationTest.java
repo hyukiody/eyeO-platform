@@ -1,90 +1,172 @@
 package com.teraapi.integration;
 
-import com.teraapi.encryption.AESGCMEncryption;
-import com.teraapi.ratelimit.RateLimiter;
+import com.teraapi.identity.dto.AuthenticationRequest;
+import com.teraapi.identity.dto.AuthenticationResponse;
+import com.teraapi.identity.entity.Role;
+import com.teraapi.identity.entity.User;
+import com.teraapi.identity.repository.RoleRepository;
+import com.teraapi.identity.repository.UserRepository;
+import com.teraapi.identity.service.AuthenticationService;
+import com.teraapi.identity.service.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class EndpointIntegrationTest {
-    private RateLimiter rateLimiter;
-    private AESGCMEncryption encryption;
-    private static final String TEST_KEY = "0123456789abcdef0123456789abcdef";
+@ExtendWith(MockitoExtension.class)
+class EndpointIntegrationTest {
+
+    private static final String TEST_SECRET =
+            "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF";
+
+    private JwtTokenProvider realTokenProvider;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private RoleRepository roleRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    private AuthenticationService authenticationService;
 
     @BeforeEach
-    void setup() {
-        rateLimiter = new RateLimiter(60, 60000);
-        encryption = new AESGCMEncryption();
+    void setUp() {
+        realTokenProvider = new JwtTokenProvider();
+        ReflectionTestUtils.setField(realTokenProvider, "jwtSecret", TEST_SECRET);
+        ReflectionTestUtils.setField(realTokenProvider, "jwtExpirationMs", 3_600_000L);
+
+        authenticationService = new AuthenticationService(
+                authenticationManager,
+                jwtTokenProvider,
+                userRepository,
+                roleRepository,
+                passwordEncoder
+        );
     }
 
     @Test
-    void testRateLimiterConcurrent() throws InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-        CountDownLatch latch = new CountDownLatch(100);
-        AtomicInteger allowed = new AtomicInteger(0);
-        AtomicInteger rejected = new AtomicInteger(0);
+    void shouldGenerateValidJwtWithCustomClaims() {
+        String token = realTokenProvider.generateToken("neo", "ADMIN", "device-77");
 
-        for (int i = 0; i < 100; i++) {
-            executor.submit(() -> {
-                if (rateLimiter.allowRequest("concurrent-client")) {
-                    allowed.incrementAndGet();
-                } else {
-                    rejected.incrementAndGet();
-                }
-                latch.countDown();
-            });
-        }
-
-        latch.await();
-        executor.shutdown();
-
-        assertEquals(60, allowed.get());
-        assertEquals(40, rejected.get());
+        assertTrue(realTokenProvider.isTokenValid(token));
+        assertEquals("neo", realTokenProvider.getUsernameFromToken(token));
+        assertEquals("ADMIN", realTokenProvider.getRoleFromToken(token));
+        assertEquals("device-77", realTokenProvider.getDeviceIdFromToken(token));
     }
 
     @Test
-    void testEncryptionRoundTrip() {
-        String plaintext = "Test sensitive data for encryption";
-        String aesKey = TEST_KEY;
-
-        String ciphertext = AESGCMEncryption.encrypt(plaintext, aesKey);
-        assertNotNull(ciphertext);
-        assertNotEquals(plaintext, ciphertext);
-
-        String decrypted = AESGCMEncryption.decrypt(ciphertext, aesKey);
-        assertEquals(plaintext, decrypted);
+    void shouldRejectMalformedTokens() {
+        assertFalse(realTokenProvider.isTokenValid("this-is-not-a-jwt"));
     }
 
     @Test
-    void testRSAEncryption() {
-        String plaintext = "Secret message";
+    void shouldAuthenticateUserAndReturnJwtResponse() {
+        AuthenticationRequest request = AuthenticationRequest.builder()
+                .username("trinity")
+                .password("matrix")
+                .build();
 
-        String publicKeyPem = RSAEncryption.getPublicKeyPEM();
-        String ciphertext = RSAEncryption.encrypt(plaintext, publicKeyPem);
-        assertNotNull(ciphertext);
+        Role role = Role.builder()
+                .id(1L)
+                .name("DEFENDER")
+                .description("Zero-trust defender")
+                .build();
 
-        String privateKeyPem = RSAEncryption.getPrivateKeyPEM();
-        String decrypted = RSAEncryption.decrypt(ciphertext, privateKeyPem);
-        assertEquals(plaintext, decrypted);
+        User user = User.builder()
+                .id(5L)
+                .username("trinity")
+                .password("hash")
+                .role(role)
+                .deviceId("device-99")
+                .build();
+
+        when(authenticationManager.authenticate(any())).thenReturn(mock(Authentication.class));
+        when(userRepository.findByUsername("trinity")).thenReturn(Optional.of(user));
+        when(jwtTokenProvider.generateToken("trinity", "DEFENDER", "device-99"))
+                .thenReturn("signed-token");
+        when(jwtTokenProvider.getExpirationTimeInSeconds()).thenReturn(3600L);
+
+        AuthenticationResponse response = authenticationService.authenticate(request);
+
+        assertEquals("signed-token", response.getAccessToken());
+        assertEquals("trinity", response.getUsername());
+        assertEquals("DEFENDER", response.getRole());
+        assertEquals(3600L, response.getExpiresIn());
+        assertEquals("Bearer", response.getTokenType());
+
+        verify(authenticationManager).authenticate(
+                argThat(auth -> "trinity".equals(auth.getName()))
+        );
+        verify(jwtTokenProvider).generateToken("trinity", "DEFENDER", "device-99");
     }
 
     @Test
-    void testRateLimiterRefill() throws InterruptedException {
-        RateLimiter limiter = new RateLimiter(2, 100);
-        String clientId = "refill-test";
+    void shouldRegisterNewUserWithEncodedPasswordAndDefaultRole() {
+        User newUser = User.builder()
+                .username("switch")
+                .password("plain-password")
+                .email("switch@zion.io")
+                .deviceId("device-17")
+                .build();
 
-        assertTrue(limiter.allowRequest(clientId));
-        assertTrue(limiter.allowRequest(clientId));
-        assertFalse(limiter.allowRequest(clientId));
+        Role userRole = Role.builder()
+                .id(2L)
+                .name("USER")
+                .description("Standard user")
+                .build();
 
-        Thread.sleep(150);
+        when(userRepository.findByUsername("switch")).thenReturn(Optional.empty());
+        when(userRepository.findByEmail("switch@zion.io")).thenReturn(Optional.empty());
+        when(passwordEncoder.encode("plain-password")).thenReturn("encoded-secret");
+        when(roleRepository.findByName("USER")).thenReturn(Optional.of(userRole));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+            User saved = invocation.getArgument(0);
+            saved.setId(42L);
+            return saved;
+        });
+        when(jwtTokenProvider.generateToken("switch", "USER"))
+                .thenReturn("fresh-token");
+        when(jwtTokenProvider.getExpirationTimeInSeconds()).thenReturn(7_200L);
 
-        assertTrue(limiter.allowRequest(clientId));
+        AuthenticationResponse response = authenticationService.register(newUser);
+
+        assertEquals("fresh-token", response.getAccessToken());
+        assertEquals("switch", response.getUsername());
+        assertEquals("USER", response.getRole());
+        assertEquals(7_200L, response.getExpiresIn());
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userCaptor.capture());
+
+        User captured = userCaptor.getValue();
+        assertEquals("encoded-secret", captured.getPassword());
+        assertEquals(userRole, captured.getRole());
+
+        verify(passwordEncoder, times(1)).encode("plain-password");
     }
 }

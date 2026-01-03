@@ -20,7 +20,7 @@ import java.util.List;
  * Provides centralized audit logging for all security-sensitive events.
  * Implements automatic 90-day retention policy with scheduled cleanup.
  * 
- * @author eyeO Platform Security Team
+ * @author yo3 Platform Security Team
  * @version 1.0
  */
 @Service

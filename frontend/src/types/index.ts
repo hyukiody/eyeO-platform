@@ -1,4 +1,4 @@
-// Type definitions for eyeO Platform Authentication and Monetization
+// Type definitions for yo3 Platform Authentication and Monetization
 
 export interface AuthenticationRequest {
   username: string;

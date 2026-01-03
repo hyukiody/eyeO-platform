@@ -54,12 +54,12 @@ export class ApiClient {
     }
   }
 
-  public async login(email: string, password: string) {
-    return this.request('/api/auth/login', 'POST', { email, password });
+  public async login(email: string, password: string): Promise<ApiResponse<{ token: string }>> {
+    return this.request<{ token: string }>('/api/auth/login', 'POST', { email, password });
   }
 
-  public async register(email: string, password: string) {
-    return this.request('/api/auth/register', 'POST', { email, password });
+  public async register(email: string, password: string): Promise<ApiResponse<{ token: string }>> {
+    return this.request<{ token: string }>('/api/auth/register', 'POST', { email, password });
   }
 
   public async uploadImages(files: File[]) {

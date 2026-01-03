@@ -1,5 +1,5 @@
 # ========================================
-# EyeO Platform - Complete Deployment with Test Verification
+# yo3 Platform - Complete Deployment with Test Verification
 # 🔒 PRIVATE DEVELOPMENT ENVIRONMENT ONLY
 # ========================================
 # 
@@ -25,7 +25,7 @@ $ErrorActionPreference = "Stop"
 $startTime = Get-Date
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "🚀 EyeO Platform - Deployment with Test Verification" -ForegroundColor Cyan
+Write-Host "🚀 yo3 Platform - Deployment with Test Verification" -ForegroundColor Cyan
 Write-Host "🔒 Private Development Environment" -ForegroundColor Yellow
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "Environment: $Environment" -ForegroundColor Yellow
@@ -315,7 +315,7 @@ Start-Sleep -Seconds 5
 
 # Build and start application services
 Write-Host "Building application services..." -ForegroundColor Cyan
-$services = @("secure-io-engine", "eyeo-edge-node", "identity-service", "stream-processor")
+$services = @("secure-io-engine", "yo3-edge-node", "identity-service", "stream-processor")
 
 foreach ($service in $services) {
     Write-Host "Building $service..." -ForegroundColor Cyan

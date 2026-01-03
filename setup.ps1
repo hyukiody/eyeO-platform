@@ -1,8 +1,8 @@
 #!/usr/bin/env pwsh
-# setup.ps1 - Script de configuração inicial do EyeO Platform
+# setup.ps1 - Script de configuração inicial do yo3 Platform
 
 Write-Host "═══════════════════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "🔒 EyeO Platform - Setup Script" -ForegroundColor Cyan
+Write-Host "🔒 yo3 Platform - Setup Script" -ForegroundColor Cyan
 Write-Host "═══════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host ""
 
@@ -74,8 +74,8 @@ if (!(Test-Path "ops/ssl/server.crt")) {
     Write-Host "  Gerando certificado auto-assinado..." -ForegroundColor Gray
     
     $certParams = @{
-        Subject = "CN=localhost,O=EyeO Platform,C=BR"
-        DnsName = @("localhost", "127.0.0.1", "api-gateway", "eyeo.local")
+        Subject = "CN=localhost,O=yo3 Platform,C=BR"
+        DnsName = @("localhost", "127.0.0.1", "api-gateway", "yo3.local")
         CertStoreLocation = "Cert:\CurrentUser\My"
         NotAfter = (Get-Date).AddYears(1)
         KeyAlgorithm = "RSA"

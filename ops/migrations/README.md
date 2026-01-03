@@ -1,4 +1,4 @@
-# EyeO Platform - Database Migrations
+# yo3 Platform - Database Migrations
 
 Modular database migration system for the convergent platform architecture.
 

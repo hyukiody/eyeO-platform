@@ -1,4 +1,4 @@
-# eyeO Platform 👁️
+# YO3 Platform 👁️
 
 **Zero-Trust Microservices Security Platform**
 
@@ -36,8 +36,8 @@ Production-grade platform demonstrating Zero-Trust architecture, client-side AES
 ### Start Services
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/eyeo-platform.git
-cd eyeo-platform
+git clone https://github.com/yourusername/yo3-platform.git
+cd yo3-platform
 
 # Start databases
 docker-compose up -d mysql-identity mysql-stream
@@ -58,7 +58,7 @@ Access at `http://localhost:5173`
 ## Project Structure
 
 ```
-eyeo-platform/
+yo3-platform/
 ├── identity-service/     # JWT auth, license validation (8081)
 ├── data-core/           # Storage, encryption, quotas (8082)
 ├── stream-processing/   # Event processing (8083)

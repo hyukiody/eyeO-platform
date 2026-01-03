@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class AdvancedStreamHandler implements HttpHandler {
     private final RateLimiter rateLimiter;
-    private final DataProtection.AESGCMProtection aesGcm;
     private SecretKey aesKey;
 
     public AdvancedStreamHandler(int requestsPerMinute) throws Exception {
