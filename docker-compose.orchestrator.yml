@@ -1,0 +1,248 @@
+# ========================================
+# YO3 Platform - Single Container Deployment
+# ========================================
+# Unified container model with external databases
+# All services (data-core, edge-node, identity-service, 
+# stream-processing, middleware, frontend) run in single container
+
+networks:
+  yo3_network:
+    driver: bridge
+
+volumes:
+  identity-db-data:
+    driver: local
+  stream-db-data:
+    driver: local
+  sentinel-db-data:
+    driver: local
+  yo3-storage:
+    driver: local
+
+services:
+  # ============================================================
+  # YO3 Platform - Unified Single Container
+  # Contains all 6 services running as managed processes
+  # ============================================================
+  yo3-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile.orchestrator
+    image: yo3-platform:latest
+    container_name: yo3-platform
+    
+    # Environment configuration - all services inherit
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-production}
+      YO3_LOG_LEVEL: ${YO3_LOG_LEVEL:-INFO}
+      JAVA_OPTS: ${JAVA_OPTS:--Xmx2G -Xms512M -XX:+UseG1GC}
+      
+      # Service ports
+      IDENTITY_PORT: 8081
+      DATA_CORE_PORT: 9090
+      STREAM_PORT: 8082
+      MIDDLEWARE_PORT: 8091
+      EDGE_NODE_PORT: 8080
+      FRONTEND_PORT: 5173
+      
+      # Identity Service DB
+      IDENTITY_DB_URL: jdbc:mysql://identity-db:3306/teraapi_identity?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      IDENTITY_DB_USER: ${IDENTITY_DB_USER:-identity_user}
+      IDENTITY_DB_PASSWORD: ${IDENTITY_DB_PASSWORD:-DevIdentityPass2024}
+      
+      # Stream Processing DB
+      STREAM_DB_URL: jdbc:mysql://stream-db:3307/teraapi_stream?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      STREAM_DB_USER: ${STREAM_DB_USER:-stream_user}
+      STREAM_DB_PASSWORD: ${STREAM_DB_PASSWORD:-DevStreamPass2024}
+      
+      # Sentinel DB
+      SENTINEL_DB_URL: jdbc:postgresql://sentinel-db:5432/sentinel
+      SENTINEL_DB_USER: ${SENTINEL_DB_USER:-sentinel_user}
+      SENTINEL_DB_PASSWORD: ${SENTINEL_DB_PASSWORD:-DevSentinelPass2024}
+      
+      # Security
+      JWT_SECRET: ${JWT_SECRET:-7f213eab1c28432faec74d78f8f4d6c8b36a0d3c1f5e4a9c2d1f7b8e5c6a4d2}
+      YO3_MASTER_KEY: ${YO3_MASTER_KEY:-dev-data-key-2024}
+      
+      # Device Configuration
+      DEVICE_ID: ${DEVICE_ID:-edge-node-001}
+      DEVICE_TOKEN: ${DEVICE_TOKEN:-dev-device-token-2024}
+      
+      # Storage
+      YO3_STORAGE_PATH: /opt/yo3/data/storage
+      
+      # CORS
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost:80}
+    
+    # Port mappings - all services exposed
+    ports:
+      - "80:5173"          # Frontend (via proxy)
+      - "8080:8080"        # Edge Node
+      - "8081:8081"        # Identity Service
+      - "8082:8082"        # Stream Processing
+      - "8091:8091"        # Middleware
+      - "9090:9090"        # Data Core
+      - "5173:5173"        # Frontend direct access
+    
+    # Volume mounts for persistence
+    volumes:
+      - yo3-storage:/opt/yo3/data/storage
+      - ./ops:/opt/yo3/config/ops:ro
+    
+    # Networking
+    networks:
+      - yo3_network
+    
+    # Dependencies on databases
+    depends_on:
+      identity-db:
+        condition: service_healthy
+      stream-db:
+        condition: service_healthy
+      sentinel-db:
+        condition: service_healthy
+    
+    # Health check for entire platform
+    healthcheck:
+      test: ["CMD", "/opt/yo3/scripts/health-check.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    
+    restart: unless-stopped
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    
+    stdin_open: true
+    tty: true
+
+  # ============================================================
+  # Identity Service Database
+  # ============================================================
+  identity-db:
+    image: mysql:8.0
+    container_name: yo3-identity-db
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: ${IDENTITY_MYSQL_ROOT_PASSWORD:-DevIdentityRoot2024}
+      MYSQL_DATABASE: teraapi_identity
+      MYSQL_USER: ${IDENTITY_DB_USER:-identity_user}
+      MYSQL_PASSWORD: ${IDENTITY_DB_PASSWORD:-DevIdentityPass2024}
+    
+    volumes:
+      - identity-db-data:/var/lib/mysql
+      - ./ops/scripts/init-identity-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    
+    networks:
+      - yo3_network
+    
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+    restart: unless-stopped
+
+  # ============================================================
+  # Stream Processing Database
+  # ============================================================
+  stream-db:
+    image: mysql:8.0
+    container_name: yo3-stream-db
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: ${STREAM_MYSQL_ROOT_PASSWORD:-DevStreamRoot2024}
+      MYSQL_DATABASE: teraapi_stream
+      MYSQL_USER: ${STREAM_DB_USER:-stream_user}
+      MYSQL_PASSWORD: ${STREAM_DB_PASSWORD:-DevStreamPass2024}
+    
+    volumes:
+      - stream-db-data:/var/lib/mysql
+      - ./ops/scripts/init-stream-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    
+    networks:
+      - yo3_network
+    
+    ports:
+      - "3307:3306"
+    
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+    restart: unless-stopped
+
+  # ============================================================
+  # Sentinel Database (PostgreSQL)
+  # ============================================================
+  sentinel-db:
+    image: postgres:16
+    container_name: yo3-sentinel-db
+    
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sentinel}
+      POSTGRES_USER: ${POSTGRES_USER:-sentinel_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-DevSentinelPass2024}
+    
+    volumes:
+      - sentinel-db-data:/var/lib/postgresql/data
+      - ./ops/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./ops/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+    
+    networks:
+      - yo3_network
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinel_user -d sentinel"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+    restart: unless-stopped
+    
+    command: postgres -c hba_file=/etc/postgresql/pg_hba.conf
+
+# ========================================
+# Usage
+# ========================================
+# Single command to start entire platform:
+#   docker-compose up -d
+#
+# Access the system:
+#   Frontend:   http://localhost:5173
+#   Identity:   http://localhost:8081
+#   Data Core:  http://localhost:9090
+#   Stream:     http://localhost:8082
+#   Middleware: http://localhost:8091
+#   Edge Node:  http://localhost:8080
+#
+# View logs:
+#   docker-compose logs -f yo3-platform
+#
+# Stop everything:
+#   docker-compose down
+#
+# IP Protection Benefits:
+#   ✓ All services in single encrypted container
+#   ✓ Difficult to decompose or reverse engineer
+#   ✓ Single version number for entire platform
+#   ✓ Simplified distribution and licensing
