@@ -1,53 +1,113 @@
-# YO3 Platform 👁️
+# yo3 Platform - Frontend
 
-[![Status](https://img.shields.io/badge/Status-Work%20In%20Progress-yellow)](https://github.com/hyukiody/yO3-platform)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Demo](https://img.shields.io/badge/Demo-Live-green)](https://hyukiody.github.io/yO3-platform/)
-
-**Zero-Trust Microservices Security Platform**
-
-⚠️ **WORK IN PROGRESS** - Active development in progress. Core features functional, UI/UX refinements ongoing.
-
-Production-grade platform demonstrating Zero-Trust architecture, client-side AES-256-GCM encryption, JWT authentication, and tiered licensing. Built with Spring Boot 3.4, React 18, and Docker Compose.
-
----
-
-## Core Features
-
-- **Zero-Trust Security**: Client-side AES-256-GCM encryption, PBKDF2 key derivation
-- **JWT Authentication**: HS512 signatures with custom license claims
-- **3-Tier Licensing**: FREE/PRO/ENTERPRISE with quota enforcement
-- **Microservices**: Independent services with Shared-Nothing Architecture
-- **Modern Stack**: Spring Boot 3.4, React 18 + TypeScript, MySQL 8.0
-
----
-
-## Technology Stack
-
-- **Backend**: Java 17, Spring Boot 3.4, Spring Security, JPA/Hibernate
-- **Frontend**: React 18, TypeScript 5.6, Vite 5.2, Web Crypto API
-- **Database**: MySQL 8.0
-- **Infrastructure**: Docker Compose, Nginx
-- **Security**: JWT (jjwt), AES-256-GCM, PBKDF2
-
----
+Advanced surveillance platform frontend with React + TypeScript + Vite.
 
 ## 🚀 Quick Start
 
-### 🌐 Live Demo (GitHub Pages)
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-**No installation required!** Try the demo immediately:
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-**URL**: [https://hyukiody.github.io/yO3-platform/](https://hyukiody.github.io/yO3-platform/)
+---
 
-**Demo Credentials**:
-- **Username**: `admin`
-- **Password**: `admin123`
+## 📚 Documentation
 
-**Features Available**:
-- ✅ Frontend interface (full UI/UX)
-- ✅ Authentication flow (demo mode)
-- ✅ Object detection visualization (simulated YOLOv8)
+- **[Frontend Guide](./docs/FRONTEND.md)** - React component architecture, features, and development
+- **[Contributing](./docs/CONTRIBUTING.md)** - How to contribute to this project
+- **[License](./docs/LICENSE)** - MIT License
+
+---
+
+## 🎯 Features
+
+- React 18 + TypeScript + Vite
+- Advanced surveillance monitoring
+- Real-time video streaming
+- Device management interface
+- Analytics dashboard
+- 20+ React components
+- Internationalization (i18n)
+- Comprehensive testing setup
+
+---
+
+## 📦 Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/          # 20+ React components
+│   ├── contexts/            # Auth context
+│   ├── hooks/               # Custom React hooks
+│   ├── lib/                 # Utilities and helpers
+│   ├── locales/             # i18n translations
+│   ├── styles/              # Global CSS
+│   ├── App.tsx              # Main app component
+│   └── main.tsx             # Entry point
+├── public/                  # Static assets
+├── package.json             # Dependencies
+├── vite.config.ts           # Build configuration
+└── tsconfig.json            # TypeScript config
+```
+
+---
+
+## 🛠️ Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+npm run test         # Run tests
+npm run coverage     # Generate test coverage
+```
+
+---
+
+## 🌐 Deployment
+
+The frontend is automatically deployed to GitHub Pages:
+
+```
+https://hyukiody.github.io/yO3-platform/
+```
+
+### Build & Deploy
+
+```bash
+npm run build
+# Deployment happens automatically via GitHub Actions
+```
+
+---
+
+## 📋 License
+
+This project is licensed under the MIT License - see [LICENSE](./docs/LICENSE) for details.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+---
+
+## 📧 Support
+
+For issues or questions:
+- [GitHub Issues](https://github.com/hyukiody/yO3-platform/issues)
+- [GitHub Discussions](https://github.com/hyukiody/yO3-platform/discussions)
+
+---
+
+**Repository**: https://github.com/hyukiody/yO3-platform  
+**Status**: ✅ Production-Ready
 - ✅ Encryption showcase (AES-256-GCM)
 - ✅ Video streaming demos
 - ⚠️ Backend services (mocked - no real database)
