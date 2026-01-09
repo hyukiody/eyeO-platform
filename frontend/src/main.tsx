@@ -7,7 +7,7 @@ import App from './App'
 import './index.css'
 import './i18n'
 
-const basename = import.meta.env.DEV ? '/' : '/frontproject-development-serviceApi/';
+const basename = import.meta.env.DEV ? '/' : '/yO3-platform/';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

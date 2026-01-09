@@ -1,7 +1,7 @@
 {
-  "name": "frontproject-development-serviceapi",
+  "name": "yo3-platform-frontend",
   "version": "1.0.0",
-  "description": "Orange-themed React + Vite + TypeScript frontend with mobile-optimized design",
+  "description": "yo3 Platform Frontend - Advanced surveillance integration with React + Vite + TypeScript",
   "main": "index.js",
   "private": true,
   "type": "module",
@@ -19,9 +19,9 @@
     "test:ci": "vitest run --coverage",
     "open": "start http://localhost:5173/",
     "preview:open": "vite preview --open",
-    "open:live": "start https://hyukiody.github.io/frontproject-development-serviceApi/",
-    "status:deploy": "start https://github.com/hyukiody/frontproject-development-serviceApi/actions/workflows/deploy.yml",
-    "status:ci": "start https://github.com/hyukiody/frontproject-development-serviceApi/actions/workflows/ci.yml"
+    "open:live": "start https://hyukiody.github.io/yO3-platform/",
+    "status:deploy": "start https://github.com/hyukiody/yO3-platform/actions/workflows/deploy.yml",
+    "status:ci": "start https://github.com/hyukiody/yO3-platform/actions/workflows/ci.yml"
   },
   "keywords": [
     "deployment",
