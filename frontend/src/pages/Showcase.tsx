@@ -84,6 +84,23 @@ export default function Showcase() {
           </div>
         </Link>
 
+        {/* Agent Vision Dashboard Card */}
+        <Link to="/showcase/agent-vision" className="showcase-card">
+          <div className="card-icon">🤖</div>
+          <h2 className="card-title">Agent Vision Dashboard</h2>
+          <p className="card-description">
+            AI-powered scene analysis with protocol management and VLM integration
+          </p>
+          <div className="card-tags">
+            <span className="tag">VLM</span>
+            <span className="tag">Agentic AI</span>
+            <span className="tag">Protocol Engine</span>
+          </div>
+          <div className="card-footer">
+            <span className="card-action">View Demo →</span>
+          </div>
+        </Link>
+
         {/* Code Samples Card */}
         <div className="showcase-card coming-soon">
           <div className="card-icon">💻</div>

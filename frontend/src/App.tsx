@@ -10,6 +10,7 @@ import ObjectDetectionMonitor from './components/ObjectDetectionMonitor'
 import EncryptionDemo from './pages/showcase/EncryptionDemo'
 import ArchitectureShowcase from './pages/showcase/ArchitectureShowcase'
 import ZeroTrustVideoDemo from './pages/showcase/ZeroTrustVideoDemo'
+import AgentVisionDashboard from './pages/showcase/AgentVisionDashboard'
 import TestDashboard from './components/TestDashboard'
 import { TelemetryDashboard } from './components/glass-box/TelemetryDashboard'
 import styles from './App.module.css'
@@ -116,6 +117,7 @@ export default function App() {
           <Route path="/showcase/encryption" element={<EncryptionDemo />} />
           <Route path="/showcase/architecture" element={<ArchitectureShowcase />} />
           <Route path="/showcase/zero-trust" element={<ZeroTrustVideoDemo />} />
+          <Route path="/showcase/agent-vision" element={<AgentVisionDashboard />} />
           {SHOW_TEST_DASHBOARD && (
             <Route path="/test-dashboard" element={<TestDashboard />} />
           )}
